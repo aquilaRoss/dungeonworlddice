@@ -15,12 +15,12 @@ let rollOptions = [
 ]
 
 let modifierDice = [
-	{"description": "+0",			"dieMaxResult": 0 },
-	{"description": "+1D4",			"dieMaxResult": 4 },
-	{"description": "+1D6",			"dieMaxResult": 6 },
-	{"description": "+1D8",			"dieMaxResult": 8 },
-	{"description": "+1D10",		"dieMaxResult": 10 },
-	{"description": "+1D12",		"dieMaxResult": 12 }
+	{"description": "",			"dieMaxResult": 0 },
+	{"description": "+D4",		"dieMaxResult": 4 },
+	{"description": "+D6",		"dieMaxResult": 6 },
+	{"description": "+D8",		"dieMaxResult": 8 },
+	{"description": "+D10",		"dieMaxResult": 10 },
+	{"description": "+D12",		"dieMaxResult": 12 }
 ]
 
 let flatModifier = { "minimum":-5, "maximum":5, "default":1  };
