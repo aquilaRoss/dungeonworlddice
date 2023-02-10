@@ -2,10 +2,16 @@
 
 let bruteForceNumber = 10000;
 
+// If you add more options here, make sure you add them to generateOneRoll(*) as well
 let rollOptions = [
-	{"description": "Base Move (2D6)",	"rollIndex": 1 },
-	{"description": "D6+D8",			"rollIndex": 2 },
-	{"description": "2D10 K1H",			"rollIndex": 3 }
+	{"description": "Base Move (2D6)", 	"rollFunction":rollBasicMove},
+	{"description": "D6+D8", 			"rollFunction":rollImprovedMove},
+	{"description": "2D10 K1H", 		"rollFunction":roll2D10K1H},
+	{"description": "1D4", 				"rollFunction":rollD4},
+	{"description": "1D6", 				"rollFunction":rollD6},
+	{"description": "1D8", 				"rollFunction":rollD8},
+	{"description": "1D10", 			"rollFunction":rollD10},
+	{"description": "1D12", 			"rollFunction":rollD12}
 ]
 
 let modifierDice = [
@@ -17,7 +23,16 @@ let modifierDice = [
 	{"description": "+1D12",		"dieMaxResult": 12 }
 ]
 
-let flatModifier = { "minimum":-5, "maximum":5, "default":1  }; 
+let flatModifier = { "minimum":-5, "maximum":5, "default":1  };
+
+function rollBasicMove() { return (rollDie(6) + rollDie(6)); }
+function rollImprovedMove() { return (rollDie(8) + rollDie(6)); }
+function rollD4() { return rollDie(4); }
+function rollD6() { return rollDie(6); }
+function rollD8() { return rollDie(8); }
+function rollD10() { return rollDie(10); }
+function rollD12() { return rollDie(12); }
+function roll2D10K1H() { return Math.max(rollDie(10), rollDie(10)); }
 
 function getData()
 {
@@ -26,14 +41,6 @@ function getData()
   this.flatModifier = parseInt(document.getElementById("flatModifier").value, 10);
   
   this.rollData = generateBruteForceData(this.rollCode, this.modifierDice, this.flatModifier);
-  
-  
-  
-  //this.averageResultRaw = bruteForceAverageRoll(this.skill, this.dice);
-  //this.averageResult = Number(this.averageResultRaw.toFixed(1));
-  
-  //this.percentageChanceOfAtLeastN_scaled = bruteForcePercentageChance(this.skill, this.dice, this.difficulty);
-  //this.percentageChanceOfAtLeastN = Number(this.percentageChanceOfAtLeastN_scaled.toFixed(1));
 }
 
 function populateResults()
@@ -45,8 +52,6 @@ function populateResults()
     document.getElementById("resultsTable").innerHTML = "";	
     document.getElementById("resultsTable").append(HTMLTableFromResults(rawData.rollData));
 }
-
-function sortAsNumber(a, b){ return a-b; }
 
 function HTMLTableFromResults(rollData)
 {
@@ -110,9 +115,6 @@ function generateBruteForceData(rollCode=0, modifierDice=0, flatModifier=0)
 	
 	this.averageResult = Math.round((this.cumilativeResult / bruteForceNumber) * 10) / 10;
   
-	
-  
-  
 	for (let row = 0; row < this.percentage.length ; row++)
 	{
 		if (this.results[row] != 0)
@@ -132,35 +134,12 @@ function generateBruteForceData(rollCode=0, modifierDice=0, flatModifier=0)
 		}
 	}
   
-  
-  
-  
 	return this;
 }
 
 function generateOneRoll(rollCode=0, modifierDice=0, flatModifier=0)
 {
-	var basicResult = 0;
-	
-	switch(rollCode)
-	{
-		case 1:
-			basicResult += rollDie(6);
-			basicResult += rollDie(8);
-			break;
-			
-		case 2:
-			var firstRoll = rollDie(10);
-			var secondRoll = rollDie(10);
-			basicResult = Math.max(secondRoll, firstRoll);
-			break;
-			
-		default:
-		case 0:
-			basicResult += rollDie(6);
-			basicResult += rollDie(6);
-			break;
-	}
+	var basicResult = rollOptions[rollCode].rollFunction();
 	
 	var rolledMod = rollDie(modifierDice);
 	
