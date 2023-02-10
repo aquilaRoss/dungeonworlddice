@@ -11,7 +11,9 @@ let rollOptions = [
 	{"description": "1D6", 				"rollFunction":rollD6},
 	{"description": "1D8", 				"rollFunction":rollD8},
 	{"description": "1D10", 			"rollFunction":rollD10},
-	{"description": "1D12", 			"rollFunction":rollD12}
+	{"description": "1D12", 			"rollFunction":rollD12},
+	{"description": "1D6,1D4 K1H", 		"rollFunction":rollD6D4KH1},
+	{"description": "1D8,1D6 K1H", 		"rollFunction":rollD8D6KH1}
 ]
 
 let modifierDice = [
@@ -33,6 +35,8 @@ function rollD8() { return rollDie(8); }
 function rollD10() { return rollDie(10); }
 function rollD12() { return rollDie(12); }
 function roll2D10K1H() { return Math.max(rollDie(10), rollDie(10)); }
+function rollD6D4KH1() { return Math.max(rollDie(6), rollDie(4)); }
+function rollD8D6KH1() { return Math.max(rollDie(8), rollDie(6)); }
 
 function getData()
 {
